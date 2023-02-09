@@ -15,44 +15,43 @@ MonoBehaviour:
   icon: {fileID: 2800000, guid: 44a17a5b205fcd349a24700e6f5615bd, type: 3}
   title: Welcome to Hidden World!
   sections:
-  - heading: Hidden World Readme
+  - heading: 'Hidden World ReadMe '
     text: 
     linkText: 
     url: 
   - heading: 
-    text: 'Hidden World is a Third Person Project built in Unity using URP in unity version 2021.3.16f1.'
-    linkText: Starter Assets - First Person Character Controller
-    url: http://u3d.as/2z1q
+    text: "Hidden World is a Third Person Project built in Unity using URP in unity version 2021.3.16f1."
+  - heading: 'Important! '
+    text: "Please make sure to check the GitHub Repo before working on the project. Also keep in mind to
+    double check with your classmates before making a push."
+    linkText:
+    url:
+  - heading: 'Links '
+    text: "The links below lead to the classes Game Design Document, Trello Board and Miro board."
+  - heading:
+    linkText: Game Design Document
+    url: https://docs.google.com/document/d/1M3Khke7e_UNG4L0dN6xBGnpbLRYtZGs4Z9Smo9E59oY/edit#heading=h.gjdgxs
   - heading: 
     text: 
-    linkText: Starter Assets - Third Person Character Controller
-    url: http://u3d.as/2z1r
-  - heading: 
-    text: "The Starter Assets packages are compatible with Unity 2020.3 LTS and leverage
-      Unity\u2019s CharacterController component."
-    linkText: 
+    linkText: Trello Board
+    url: https://trello.com/b/GBt2ljd3/the-hidden-world-project-board-winter-2023
+  - heading:
+    text:
+    linkText: Miro Board
+    url: https://miro.com/app/board/uXjVPrpTMPo=/  
+  - heading: 'Need Help? '
+    text: "If you are ever in need for some second opinion or anything of the sort please refer to the discord and 
+    take it up in the respective channel."
+    linkText:
     url: 
-  - heading: Important note
-    text: The Starter Assets packages require the Input System and Cinemachine packages
-      to work. See the documentation (Assets/StarterAssets/StarterAssets_Documentation.pdf)
-      for more information.
+  - heading: 'Documentation '
+    text: "If you are ever stuck working on the project the unity documentation is a great
+    place to look for help. (linked below)"
+    linkText: Unity Documentation
+    url: https://docs.unity3d.com/ScriptReference/index.html
+  - heading: 'We always want to see people active! '
+    text: "Remember this project won't function without communication so please be sure to be 
+    active in the discord or just chatting with your fellow peers to keep in the loop."
     linkText: 
-    url: 
-  - heading: 'Get started  '
-    text: In StarterAssets/ThirdPersonController/Scenes or StarterAssets/FirstPersonController/Scenes,
-      you will find the Playground Scene. Here you can use the Starter Assets controller
-      in a simple playground environment and start adjusting the controller settings
-      to your liking.
-    linkText: 
-    url: 
-  - heading: Documentation
-    text: See the documentation (Assets/StarterAssets/StarterAssets_Documentation.pdf)
-      for more information on how to set up the Starter Assets in a new Scene, in
-      HDRP/URP, or for mobile devices.
-    linkText: 
-    url: 
-  - heading: 'We want to hear your feedback! '
-    text: 
-    linkText: Click here to let us know what you think about this package.
-    url: https://unitysoftware.co1.qualtrics.com/jfe/form/SV_5cg7IkyOprbHqia?packagename=starterassets
+    url:
   loadedLayout: 1
