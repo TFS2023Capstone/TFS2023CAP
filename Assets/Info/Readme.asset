@@ -39,6 +39,10 @@ MonoBehaviour:
     text:
     linkText: Miro Board
     url: https://miro.com/app/board/uXjVPrpTMPo=/  
+    - heading:
+    text:
+    linkText: Jira Board
+    url: https://thehiddenworld.atlassian.net/jira/software/projects/THW/boards/1/roadmap
   - heading: 'Need Help? '
     text: "If you are ever in need for some second opinion or anything of the sort please refer to the discord and 
     take it up in the respective channel."
