@@ -73,6 +73,10 @@ namespace HiddenWorld.Player
         [FormerlySerializedAs("LockCameraPosition")] [Tooltip("For locking the camera position on all axis")]
         public bool lockCameraPosition = false;
 
+        [Space(10)]
+        [Tooltip("determine if you can double jump")]
+        public bool Doublejump = false;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -283,6 +287,10 @@ namespace HiddenWorld.Player
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
+                    if (!grounded)
+                    {
+                        Doublejump = true;
+                    }
                     // update animator if using character
                     if (_hasAnimator)
                     {
