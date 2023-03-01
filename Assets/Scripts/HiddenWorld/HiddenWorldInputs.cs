@@ -11,6 +11,8 @@ namespace HiddenWorld
 		public bool jump;
 		public bool sprint;
 		public bool interact;
+		public bool aim;
+		public bool action;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -46,6 +48,14 @@ namespace HiddenWorld
 		{
 			SprintInput(value.isPressed);
 		}
+		public void OnAim(InputValue value)
+		{
+			AimInput(value.isPressed);
+		}
+		public void OnAction(InputValue value)
+		{
+			ActionInput(value.isPressed);
+		}
 
 		public void MoveInput(Vector2 newMoveDirection)
 		{
@@ -70,6 +80,14 @@ namespace HiddenWorld
 		public void InteractInput(bool newInteractState)
 		{
 			interact = newInteractState;
+		}
+		public void AimInput(bool newInteractState)
+		{
+			aim = newInteractState;
+		}
+		public void ActionInput(bool newInteractState)
+		{
+			action = newInteractState;
 		}
 
 		private void OnApplicationFocus(bool hasFocus)
