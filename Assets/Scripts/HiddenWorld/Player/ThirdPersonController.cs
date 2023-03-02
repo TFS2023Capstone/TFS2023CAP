@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
 
-namespace HiddenWorld
+namespace HiddenWorld.Player
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(PlayerInput))]

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace HiddenWorld
+namespace HiddenWorld.Player
 {
 	public class HiddenWorldInputs : MonoBehaviour
 	{
