@@ -1,26 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    // inherits from ISpyglassable
-
-    public bool puzzleSolved; // Flag used to denote if the puzzle object is solved
-    // private list of puzzle pieces that hold the puzzle piece identifier and whether it is solved/not solved
-    // OnInteract hook req'd
-    // private isSequential boolean variable to denote that puzzle is sequential
+    private bool _puzzleSolved; // Flag used to denote if the puzzle object is solved need get/private set
+    private bool _isSequential = false; // private isSequential boolean variable to denote that puzzle is sequential, need get/private set
 
     // Functions:
-    // IsPuzzleSolved() to check if all puzzle pieces are in their solved state
-        // checks if sequential, and if so updates a queue of pieces as they are solved and then compares to the correct sequence to set puzzleSolved
-        // if not sequential just checks if all puzzle pieces are solved
-    // StorePuzzleState .. TBD what information will be passed regarding state at savepoint
-        //public void StorePuzzleState() 
-        //{
 
-        //}
-    // OnSpyglassed() to display augmented/different sprite/graphic/etc.
+    public void ResolvePuzzle()
+    {
+    if (_isSequential == true)
+        {
+            //has to hold the proper sequence(list 1)
+            //has to update a dynamic list as each puzzle piece is interacted with to set it's state set/notset (list2)
+            //call ListComparer() helper to check
+            //if returns true then puzzleSolved = true
+        }
+    
+    else
+        {
+            //holds list 1 which is all puzzle pieces required to be set
+            //holds list 2 which is all the puzzle pieces that are set
+            //call ListChecker()
+            //if all puzzle pieces are set then puzzleSolved = true
+        }
+    }
+   
+    // StorePuzzleState() TBD if information will be passed regarding state at savepoint
+
 
 
     // Start is called before the first frame update
