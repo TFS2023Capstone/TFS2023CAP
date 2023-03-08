@@ -75,7 +75,11 @@ namespace HiddenWorld.Player
 
         [Space(10)]
         [Tooltip("determine if you can double jump")]
-        public bool Doublejump = false;
+        public bool _canDoubleJump = false;
+
+        [Space(10)]
+        [Tooltip("determine if you can double jump")]
+        public bool _canTripleJump = false;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -163,10 +167,15 @@ namespace HiddenWorld.Player
                 transform.position.z);
             grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers,
                 QueryTriggerInteraction.Ignore);
+                if(grounded == true)
+            {
+                _canDoubleJump = true;
+                _canTripleJump = true;
+            }
 
             // update animator if using character
             if (_hasAnimator)
-            {
+            { 
                 _animator.SetBool(_animIDGrounded, grounded);
             }
         }
@@ -289,13 +298,16 @@ namespace HiddenWorld.Player
 
                     if (!grounded)
                     {
-                        Doublejump = true;
+                        _canDoubleJump = true;
+                        _canTripleJump = true;
                     }
                     // update animator if using character
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
                     }
+                    // if we are not grounded, do not jump
+                    _input.jump = false;
                 }
 
                 // jump timeout
@@ -306,6 +318,43 @@ namespace HiddenWorld.Player
             }
             else
             {
+                //double Jump
+                if(_canDoubleJump == true)
+                {
+                    if (_input.jump && _jumpTimeoutDelta <= 1.0f)
+                    {
+                        // the square root of H * -2 * G = how much velocity needed to reach desired height
+                        _canDoubleJump = false;
+                        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                        // update animator if using character
+                        if (_hasAnimator)
+                        {
+                            _animator.SetBool(_animIDJump, true);
+                        }
+                        // if we are not grounded, do not jump
+                        _input.jump = false;
+                    }
+
+                }
+                else if (_canTripleJump == true)
+                {
+                    //triple jump
+                    if (_input.jump && _jumpTimeoutDelta <= 1.0f)
+                    {
+                        // the square root of H * -2 * G = how much velocity needed to reach desired height
+                        _canTripleJump = false;
+                        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                        // update animator if using character
+                        if (_hasAnimator)
+                        {
+                            _animator.SetBool(_animIDJump, true);
+                        }
+                        // if we are not grounded, do not jump
+                        _input.jump = false;
+                    }
+                }
                 // reset the jump timeout timer
                 _jumpTimeoutDelta = jumpTimeout;
 
@@ -322,6 +371,7 @@ namespace HiddenWorld.Player
                         _animator.SetBool(_animIDFreeFall, true);
                     }
                 }
+                
 
                 // if we are not grounded, do not jump
                 _input.jump = false;
