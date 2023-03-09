@@ -1,38 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PuzzlePiece : MonoBehaviour
+
+public class PuzzlePiece : Puzzle
 {
-
-    //needs to be a subscribable object
-    // public boolean isSet
-    //
-    //  Puzzle types:
-    //      positional and combinational: each piece will know it's start position and it's correct position to make isSet true
-    //      sequential: Piece will know if it has been interacted with and will toggle between not-set and set and vice-versa
-
-    // inherits from IInteractable
-    // public bool isActive to keep track of when a puzzle piece is being interacted
-    // enum PuzzleType (Jigsaw, Sequential, etc)
-    // public transform piecePosition, rotation, scale; // if pieces are moveable we will have to establish their start position.  may be vector 2 depending on puzzle representation
-    // public Quaternion puzzleRotation; // Sample puzzle mechanic variable: If puzzle can be rotated we need to set it at the start.  May be moved to puzzle subclass
+    [SerializeField] private float _startPosX;
+    [SerializeField] private float _startPosY;
+    [SerializeField] private float _startPosZ;
+    [SerializeField] private float _startRotX;
+    [SerializeField] private float _startRotY;
+    [SerializeField] private float _startRotZ;
+    [SerializeField] private float _startScale;
+    [SerializeField] private float _endPosX;
+    [SerializeField] private float _endPosY;
+    [SerializeField] private float _endPosZ;
+    [SerializeField] private float _endRotX;
+    [SerializeField] private float _endRotY;
+    [SerializeField] private float _endRotZ;
+    [SerializeField] private float _endScale;
 
     // how to implement initial and correct position when building puzzle:
-        // move piece to starting position and store transform pos,rot,scale in private variable
-        // move piece to correct end position and store transform pos,rot,scale in private variable
+    // during dev move piece to starting position and store transform pos,rot,scale in private variables
+    // during dev move piece to correct end position and store transform pos,rot,scale in private variables
 
+    public bool isSet = false;
+    public bool isActive = false; // keep track of when a puzzle piece is being interacted with
 
-    // Functions:
-    // OnInteract: if the item being interacted with then sent isActive
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    IInteractable interactable = other.GetComponent<IInteractable>();
-    //    if (interactable != null && other.CompareTag("PuzzlePiece"))
-    //    {
-    //        // interactable.OnInteract(puzzle.interact); // need to determine what gets passed
-    //    }
-    //}
+    // inherits from IInteractable
+    // enum PuzzleType (Jigsaw, Sequential, etc)
+
+    private void OnInteract()
+    {
+        if (isActive) 
+        { isActive = false; 
+        }
+        else
+        {
+            isActive = true;
+        }
+        
+        //determine if the piece is set correctly or not and if it is set correctly calls AddList2Piece() in Puzzle class
+        if (isSet)
+        {
+        Puzzle:AddList2Piece("Piece1");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null && other.CompareTag("PuzzlePiece"))
+        {
+            // interactable.OnInteract(puzzle.interact); // need to determine what gets passed
+        }
+    }
 
     // depending on PuzzleType will have different interactions and will call the appropriate method(s) (puzzle piece will be moveable and rotatable)
     // Rotate: rotates the PuzzlePiece
