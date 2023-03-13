@@ -18,7 +18,7 @@ namespace HiddenWorld
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float sprintSpeed = 5.335f;
-        
+
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
         public float rotationSmoothTime = 0.12f;
@@ -29,21 +29,29 @@ namespace HiddenWorld
         public AudioClip landingAudioClip;
         public AudioClip[] footstepAudioClips;
         [Range(0, 1)] public float footstepAudioVolume = 0.5f;
-        
+
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float jumpHeight = 1.2f;
 
+        [Tooltip("The height of the player when crouching and Standing")]
+        public float crouchHeight = 1.0f;
+        public float standingHeight = 1.8f;
+        public float timeToCrouch = 0.25f;
+        public Vector3 crouchCenter = new Vector3(0, 0.52f, 0);
+        public Vector3 standingCenter = new Vector3(0, 0.93f, 0);
+        public GameObject HeadPosition;
+
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float gravity = -15.0f;
-        
+
         [Space(10)]
         [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
         public float jumpTimeout = 0.50f;
 
         [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
         public float fallTimeout = 0.15f;
-        
+
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
         public bool grounded = true;
@@ -56,21 +64,25 @@ namespace HiddenWorld
 
         [Tooltip("What layers the character uses as ground")]
         public LayerMask groundLayers;
-        
+
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
         public GameObject cinemachineCameraTarget;
 
-        [FormerlySerializedAs("TopClamp")] [Tooltip("How far in degrees can you move the camera up")]
+        [FormerlySerializedAs("TopClamp")]
+        [Tooltip("How far in degrees can you move the camera up")]
         public float topClamp = 70.0f;
 
-        [FormerlySerializedAs("BottomClamp")] [Tooltip("How far in degrees can you move the camera down")]
+        [FormerlySerializedAs("BottomClamp")]
+        [Tooltip("How far in degrees can you move the camera down")]
         public float bottomClamp = -30.0f;
 
-        [FormerlySerializedAs("CameraAngleOverride")] [Tooltip("Additional degrees to override the camera. Useful for fine tuning camera position when locked")]
+        [FormerlySerializedAs("CameraAngleOverride")]
+        [Tooltip("Additional degrees to override the camera. Useful for fine tuning camera position when locked")]
         public float cameraAngleOverride = 0.0f;
 
-        [FormerlySerializedAs("LockCameraPosition")] [Tooltip("For locking the camera position on all axis")]
+        [FormerlySerializedAs("LockCameraPosition")]
+        [Tooltip("For locking the camera position on all axis")]
         public bool lockCameraPosition = false;
 
         // cinemachine
@@ -93,9 +105,10 @@ namespace HiddenWorld
         private int _animIDSpeed;
         private int _animIDGrounded;
         private int _animIDJump;
+        private int _animIDCrouch;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
-        
+
         private PlayerInput _playerInput;
         private Animator _animator;
         private CharacterController _controller;
@@ -112,12 +125,13 @@ namespace HiddenWorld
         private void Awake()
         {
             _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            HeadPosition = GameObject.FindGameObjectWithTag("PlayerHead");
         }
 
         private void Start()
         {
             _cinemachineTargetYaw = cinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<HiddenWorldInputs>();
@@ -134,6 +148,7 @@ namespace HiddenWorld
         {
             GroundedCheck();
             Interact();
+            Crouch();
             JumpAndGravity();
             Move();
         }
@@ -148,6 +163,7 @@ namespace HiddenWorld
             _animIDSpeed = Animator.StringToHash("Speed");
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
+            _animIDCrouch = Animator.StringToHash("Crouch");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
@@ -325,7 +341,7 @@ namespace HiddenWorld
                 _verticalVelocity += gravity * Time.deltaTime;
             }
         }
-        
+
         private void Interact()
         {
         }
@@ -367,6 +383,38 @@ namespace HiddenWorld
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 AudioSource.PlayClipAtPoint(landingAudioClip, transform.TransformPoint(_controller.center), footstepAudioVolume);
+            }
+        }
+        private void Crouch()
+        {
+            float currentHeight = _controller.height;
+            Vector3 currentCenter = _controller.center;
+            float timeElapsed = 0;
+
+            if (_input.crouch)
+            {
+                if (_hasAnimator)
+                {
+                    _animator.SetBool(_animIDCrouch, true);
+
+                    while (timeElapsed < timeToCrouch)
+                    {
+                        _controller.height = Mathf.Lerp(currentHeight, crouchHeight, timeElapsed/timeToCrouch);
+                        _controller.center = Vector3.Lerp(currentCenter, crouchCenter, timeElapsed / timeToCrouch);
+                        timeElapsed += Time.deltaTime;
+                    }
+                }
+            }
+            else if (!Physics.Raycast(HeadPosition.transform.position, Vector3.up, 0.8f))
+            {
+                _animator.SetBool(_animIDCrouch, false);
+
+                while (timeElapsed < timeToCrouch)
+                {
+                    _controller.height = Mathf.Lerp(currentHeight, standingHeight, timeElapsed / timeToCrouch);
+                    _controller.center = Vector3.Lerp(currentCenter, standingCenter, timeElapsed / timeToCrouch);
+                    timeElapsed += Time.deltaTime;
+                }
             }
         }
     }

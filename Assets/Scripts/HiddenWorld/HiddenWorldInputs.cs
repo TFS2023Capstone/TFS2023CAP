@@ -9,6 +9,7 @@ namespace HiddenWorld
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
+		public bool crouch;
 		public bool sprint;
 		public bool interact;
 
@@ -37,6 +38,11 @@ namespace HiddenWorld
 			JumpInput(value.isPressed);
 		}
 
+		public void OnCrouch(InputValue value)
+		{
+			CrouchInput(value.isPressed);
+		}
+
 		public void OnInteract(InputValue value)
 		{
 			InteractInput(value.isPressed);
@@ -60,6 +66,11 @@ namespace HiddenWorld
 		public void JumpInput(bool newJumpState)
 		{
 			jump = newJumpState;
+		}
+
+		public void CrouchInput(bool newCrouchState)
+		{
+			crouch = newCrouchState;
 		}
 
 		public void SprintInput(bool newSprintState)
