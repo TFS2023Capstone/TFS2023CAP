@@ -34,6 +34,14 @@ namespace HiddenWorld.Player
         [Tooltip("The height the player can jump")]
         public float jumpHeight = 1.2f;
 
+        [Tooltip("The height of the player when crouching and Standing")]
+        public float crouchHeight = 1.0f;
+        public float standingHeight = 1.8f;
+        public float timeToCrouch = 0.25f;
+        public Vector3 crouchCenter = new Vector3(0, 0.52f, 0);
+        public Vector3 standingCenter = new Vector3(0, 0.93f, 0);
+        public GameObject HeadPosition;
+
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float gravity = -15.0f;
 
@@ -106,6 +114,7 @@ namespace HiddenWorld.Player
         private int _animIDSpeed;
         private int _animIDGrounded;
         private int _animIDJump;
+        private int _animIDCrouch;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
@@ -125,6 +134,7 @@ namespace HiddenWorld.Player
         private void Awake()
         {
             _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            HeadPosition = GameObject.FindGameObjectWithTag("PlayerHead");
         }
 
         private void Start()
@@ -147,6 +157,7 @@ namespace HiddenWorld.Player
         {
             GroundedCheck();
             Interact();
+            Crouch();
             JumpAndGravity();
             Move();
         }
@@ -161,6 +172,7 @@ namespace HiddenWorld.Player
             _animIDSpeed = Animator.StringToHash("Speed");
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
+            _animIDCrouch = Animator.StringToHash("Crouch");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
@@ -408,6 +420,38 @@ namespace HiddenWorld.Player
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 AudioSource.PlayClipAtPoint(landingAudioClip, transform.TransformPoint(_controller.center), footstepAudioVolume);
+            }
+        }
+        private void Crouch()
+        {
+            float currentHeight = _controller.height;
+            Vector3 currentCenter = _controller.center;
+            float timeElapsed = 0;
+
+            if (_input.crouch)
+            {
+                if (_hasAnimator)
+                {
+                    _animator.SetBool(_animIDCrouch, true);
+
+                    while (timeElapsed < timeToCrouch)
+                    {
+                        _controller.height = Mathf.Lerp(currentHeight, crouchHeight, timeElapsed/timeToCrouch);
+                        _controller.center = Vector3.Lerp(currentCenter, crouchCenter, timeElapsed / timeToCrouch);
+                        timeElapsed += Time.deltaTime;
+                    }
+                }
+            }
+            else if (!Physics.Raycast(HeadPosition.transform.position, Vector3.up, 0.8f))
+            {
+                _animator.SetBool(_animIDCrouch, false);
+
+                while (timeElapsed < timeToCrouch)
+                {
+                    _controller.height = Mathf.Lerp(currentHeight, standingHeight, timeElapsed / timeToCrouch);
+                    _controller.center = Vector3.Lerp(currentCenter, standingCenter, timeElapsed / timeToCrouch);
+                    timeElapsed += Time.deltaTime;
+                }
             }
         }
     }
