@@ -75,11 +75,12 @@ namespace HiddenWorld.Player
 
         [Space(10)]
         [Tooltip("determine if you can double jump")]
-        public bool _canDoubleJump = false;
+        private int _currentJumpAmount = 0;
 
         [Space(10)]
         [Tooltip("determine if you can double jump")]
-        public bool _canTripleJump = false;
+        [SerializeField]
+        private int _maxJumpAmount = 2;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -169,8 +170,7 @@ namespace HiddenWorld.Player
                 QueryTriggerInteraction.Ignore);
                 if(grounded == true)
             {
-                _canDoubleJump = true;
-                _canTripleJump = true;
+                _currentJumpAmount = 0;
             }
 
             // update animator if using character
@@ -296,11 +296,7 @@ namespace HiddenWorld.Player
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-                    if (!grounded)
-                    {
-                        _canDoubleJump = true;
-                        _canTripleJump = true;
-                    }
+                    _currentJumpAmount++;
                     // update animator if using character
                     if (_hasAnimator)
                     {
@@ -319,12 +315,12 @@ namespace HiddenWorld.Player
             else
             {
                 //double Jump
-                if(_canDoubleJump == true)
+                if(_currentJumpAmount < _maxJumpAmount)
                 {
                     if (_input.jump && _jumpTimeoutDelta <= 1.0f)
                     {
                         // the square root of H * -2 * G = how much velocity needed to reach desired height
-                        _canDoubleJump = false;
+                        _currentJumpAmount++;
                         _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
                         // update animator if using character
@@ -337,24 +333,7 @@ namespace HiddenWorld.Player
                     }
 
                 }
-                else if (_canTripleJump == true)
-                {
-                    //triple jump
-                    if (_input.jump && _jumpTimeoutDelta <= 1.0f)
-                    {
-                        // the square root of H * -2 * G = how much velocity needed to reach desired height
-                        _canTripleJump = false;
-                        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
-                        // update animator if using character
-                        if (_hasAnimator)
-                        {
-                            _animator.SetBool(_animIDJump, true);
-                        }
-                        // if we are not grounded, do not jump
-                        _input.jump = false;
-                    }
-                }
+               
                 // reset the jump timeout timer
                 _jumpTimeoutDelta = jumpTimeout;
 
