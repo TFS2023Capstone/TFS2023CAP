@@ -44,8 +44,6 @@ namespace HiddenWorld.Systems
 		private float respawnTime;
 		// The position that the health's gameobject will respawn at
 		private Vector3 respawnPosition;
-		// The specific game time when the health can be damged again
-		private float timeToBecomeDamagableAgain = 0;
 		// Whether or not the health is invincible
 		private bool isInvincableFromDamage = false;
 

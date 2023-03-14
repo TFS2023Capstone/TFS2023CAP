@@ -5006,7 +5006,7 @@ GameObject:
   - component: {fileID: 1246104067}
   - component: {fileID: 1246104068}
   m_Layer: 0
-  m_Name: Example Game Manager
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5568,7 +5568,7 @@ GameObject:
   - component: {fileID: 1422251777}
   - component: {fileID: 1422251778}
   m_Layer: 0
-  m_Name: Example Unit Manager
+  m_Name: Unit Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
