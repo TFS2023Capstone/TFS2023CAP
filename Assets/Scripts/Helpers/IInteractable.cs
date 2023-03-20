@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Helpers
 {
     public interface IInteractable
