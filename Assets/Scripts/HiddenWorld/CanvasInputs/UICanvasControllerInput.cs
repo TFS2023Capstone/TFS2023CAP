@@ -6,8 +6,7 @@ namespace HiddenWorld
     public class UICanvasControllerInput : MonoBehaviour
     {
 
-        [FormerlySerializedAs("starterAssetsInputs")]
-        [Header("Output")]
+        [FormerlySerializedAs("starterAssetsInputs")] [Header("Output")]
         public HiddenWorldInputs hiddenWorldInputs;
 
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
@@ -34,7 +33,7 @@ namespace HiddenWorld
         {
             hiddenWorldInputs.InteractInput(virtualInteractState);
         }
-
+        
     }
 
 }

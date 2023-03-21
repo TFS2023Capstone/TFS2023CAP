@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/Scripts/HiddenWorld/Helpers/Singleton.cs.meta
 guid: b0fd4c328bcbe1747afb55a1c3b22918
-=======
-guid: 8731760b75131c34eb83e47040b21989
->>>>>>> Stashed changes:Assets/Scripts/HiddenWorld/Puzzle/Pieces/JigsawPuzzlePiece.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -3,20 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-<<<<<<< Updated upstream
   tags: []
-=======
-  tags:
-  - CinemachineTarget
-  - PuzzleJig1
-  - Piece1
-  - Piece2
-  - Piece3
-  - Piece4
-  - Enemy
-  - Pickup
-  - Environment
->>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
