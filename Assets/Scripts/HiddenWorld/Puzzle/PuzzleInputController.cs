@@ -11,6 +11,7 @@ namespace HiddenWorld
         Vector3 offset;
         private bool _isSet = false;
         public Transform selectedObjectTransform;
+        private Vector3 _mousePosition;
 
         // Start is called before the first frame update
         void Start()
@@ -26,7 +27,7 @@ namespace HiddenWorld
             float zDistance = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
 
             // Convert the mouse position to a world position with the correct z-distance
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistance));
+            _mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistance));
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -39,13 +40,13 @@ namespace HiddenWorld
                 {
                     selectedObject = interactable;
                     selectedObjectTransform = hitInfo.transform;
-                    offset = selectedObjectTransform.position - mousePosition;
+                    offset = selectedObjectTransform.position - _mousePosition;
                     _isSet = interactable.OnInteract();
                 }
             }
             if (selectedObjectTransform)
             {
-                selectedObjectTransform.position = mousePosition + offset;
+                selectedObjectTransform.position = _mousePosition + offset;
             }
             if (Input.GetMouseButtonUp(0) && selectedObject != null)
             {
@@ -53,6 +54,14 @@ namespace HiddenWorld
             }
 
         }
+        void FixedUpdate()
+        {
+            if (selectedObject != null)
+            {
+                selectedObjectTransform.GetComponent<Rigidbody>().MovePosition(_mousePosition + offset);
+            }
+        }
     }
+
 }
 
