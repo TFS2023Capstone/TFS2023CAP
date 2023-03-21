@@ -12,7 +12,7 @@ namespace HiddenWorld.Player
 		public bool sprint;
 		public bool interact;
 		public bool aim;
-		public bool action;
+		public bool spyglass;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -52,9 +52,9 @@ namespace HiddenWorld.Player
 		{
 			AimInput(value.isPressed);
 		}
-		public void OnAction(InputValue value)
+		public void OnSpyglass(InputValue value)
 		{
-			ActionInput(value.isPressed);
+			SpyglassInput(value.isPressed);
 		}
 
 		public void MoveInput(Vector2 newMoveDirection)
@@ -85,9 +85,9 @@ namespace HiddenWorld.Player
 		{
 			aim = newInteractState;
 		}
-		public void ActionInput(bool newInteractState)
+		public void SpyglassInput(bool newInteractState)
 		{
-			action = newInteractState;
+			spyglass = newInteractState;
 		}
 
 		private void OnApplicationFocus(bool hasFocus)

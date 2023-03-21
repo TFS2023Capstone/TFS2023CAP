@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Action",
+                    "name": "Spyglass",
                     "type": "Button",
                     "id": "c2d54617-9377-4fdd-8e85-10bc3aae9a90",
                     "expectedControlType": "Button",
@@ -297,7 +297,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Action",
+                    "action": "Spyglass",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -308,7 +308,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Action",
+                    "action": "Spyglass",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
