@@ -10,8 +10,7 @@ namespace HiddenWorld.Puzzle
     {
         public bool isSet = false;
         public bool isActive = false; // keep track of when a puzzle piece is being interacted with
-        private Puzzle _puzzle;
-
+        protected Puzzle _puzzle;
 
         // enum PuzzleType (Jigsaw, Sequential, etc)
 
@@ -19,7 +18,7 @@ namespace HiddenWorld.Puzzle
         {
             _puzzle = puzzle;
         }
-        public virtual void OnInteract()
+        public virtual bool OnInteract()
         {
             if (isActive)
             {
@@ -35,9 +34,8 @@ namespace HiddenWorld.Puzzle
             {
                 _puzzle.AddList2Piece(gameObject.name);
             }
+            return isActive;
         }
-
-
 
         // inherits from ISpyglassable
         // OnSpyglassed() to display augmented/different sprite/graphic/etc.

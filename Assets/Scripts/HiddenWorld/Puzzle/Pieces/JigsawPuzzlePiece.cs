@@ -27,11 +27,25 @@ namespace HiddenWorld.Puzzle.Pieces
             }
         }
 
-        public override void OnInteract()
+        public override bool OnInteract()
         {
             pieceStatus = "locked";
             isSet = true;
-            base.OnInteract();
+            if (isActive)
+            {
+                isActive = false;
+            }
+            else
+            {
+                isActive = true;
+            }
+
+            //determine if the piece is set correctly or not and if it is set correctly calls AddList2Piece() in Puzzle class
+            if (isSet)
+            {
+                _puzzle.AddList2Piece(gameObject.name);
+            }
+            return isActive;
         }
         
         private void OnMouseDown()
