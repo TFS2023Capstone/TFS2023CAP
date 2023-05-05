@@ -2,29 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using HiddenWorld.Helpers;
-using Unity.VisualScripting;
 
 namespace HiddenWorld.Puzzle.Pieces
 {
     public class JigsawPuzzlePiece : PuzzlePiece
     {
-        public override bool OnInteract()
+        public string pieceStatus = "Idle";
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            base.OnInteract();
-            // puzzle pieces moves closer by a few pixels
-            // possible hightlight to emphasize piece
-            return _isSnapped;
+
         }
 
-        public override void OnSnapped(Vector3 socketPosition)
+        // Update is called once per frame
+        void Update()
         {
-            base.OnSnapped(socketPosition);
-            _isSnapped = true;
-            transform.position = socketPosition;
-            // puzzle pieces moves to original z
-            // remove hightlight to emphasize piece
-            OnInteract();
+            if (pieceStatus == "moving")
+            {
+                Vector3 mousePosition = Mouse.current.position.ReadValue();
+                Vector3 objPosition = new Vector3(Camera.main.ScreenToWorldPoint(mousePosition).x, Camera.main.ScreenToWorldPoint(mousePosition).y, transform.position.z);
+                transform.position = objPosition;
+            }
         }
+
+        public override void OnInteract()
+        {
+            pieceStatus = "locked";
+            isSet = true;
+            base.OnInteract();
+        }
+        
+        private void OnMouseDown()
+        {
+            pieceStatus = "moving";
+        }
+
+        private void OnMouseUp()
+        {
+            pieceStatus = "idle";
+        }
+
     }
+
 }
