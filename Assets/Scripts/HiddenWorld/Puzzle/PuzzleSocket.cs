@@ -9,14 +9,11 @@ namespace HiddenWorld.Puzzle
     {
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("before snappable");
-            ISnappable snappable = other.GetComponent<ISnappable>();
-            Debug.Log("before if snappable");
-            if (snappable != null)
+            IInteractable interactable = other.GetComponent<IInteractable>();
+            if (interactable != null && other.gameObject.name.Equals(this.gameObject.name))
             {
-                Debug.Log("in if snappable");
-                snappable.OnSnapped(transform.position);
-                Debug.Log("after onsnapped");
+                other.transform.position = transform.position;
+                interactable.OnInteract();
             }
         }
     }

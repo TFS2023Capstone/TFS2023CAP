@@ -6,11 +6,9 @@ using UnityEngine;
 
 namespace HiddenWorld.Puzzle
 {
-    public class PuzzlePiece : MonoBehaviour, IInteractable, ISnappable
+    public class PuzzlePiece : MonoBehaviour, IInteractable
     {
-        public bool snappable = true;
-        protected bool _isSnapped = false;
-        protected bool _isSet = false;
+        public bool isSet = false;
         public bool isActive = false; // keep track of when a puzzle piece is being interacted with
         private Puzzle _puzzle;
 
@@ -21,14 +19,22 @@ namespace HiddenWorld.Puzzle
         {
             _puzzle = puzzle;
         }
-        public virtual bool OnInteract()
+        public virtual void OnInteract()
         {
+            if (isActive)
+            {
+                isActive = false;
+            }
+            else
+            {
+                isActive = true;
+            }
+
             //determine if the piece is set correctly or not and if it is set correctly calls AddList2Piece() in Puzzle class
-            if (_isSet)
+            if (isSet)
             {
                 _puzzle.AddList2Piece(gameObject.name);
             }
-            return _isSet;    
         }
 
 
@@ -46,14 +52,6 @@ namespace HiddenWorld.Puzzle
         void Update()
         {
 
-        }
-
-        public virtual void OnSnapped(Vector3 socketPosition)
-        {
-            if (!snappable)
-            {
-                return;
-            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using HiddenWorld.Helpers;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace HiddenWorld
@@ -39,6 +40,7 @@ namespace HiddenWorld
                 if (hit && interactable != null)
                 {
                     selectedObject = interactable;
+                    Debug.Log("selected object is " + selectedObject);
                     selectedObjectTransform = hitInfo.transform;
                     offset = selectedObjectTransform.position - _mousePosition;
                     _isSet = interactable.OnInteract();
@@ -50,7 +52,9 @@ namespace HiddenWorld
             }
             if (Input.GetMouseButtonUp(0) && selectedObject != null)
             {
+                Debug.Log("Mouse up detected");
                 selectedObject = null;
+                selectedObjectTransform = null;
             }
 
         }
