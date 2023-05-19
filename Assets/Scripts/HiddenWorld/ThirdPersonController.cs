@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
 
-namespace HiddenWorld
+namespace HiddenWorld.Player
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(PlayerInput))]
@@ -84,6 +84,14 @@ namespace HiddenWorld
         [FormerlySerializedAs("LockCameraPosition")]
         [Tooltip("For locking the camera position on all axis")]
         public bool lockCameraPosition = false;
+
+        [Space(10)]
+        [Tooltip("determine if you can double jump")]
+        private int _currentJumpAmount = 0;
+        [Space(10)]
+        [Tooltip("determine if you can double jump")]
+        [SerializeField]
+        private int _maxJumpAmount = 2;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -175,6 +183,10 @@ namespace HiddenWorld
                 transform.position.z);
             grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers,
                 QueryTriggerInteraction.Ignore);
+            if (grounded == true)
+            {
+                _currentJumpAmount = 0;
+            }
 
             // update animator if using character
             if (_hasAnimator)
@@ -299,11 +311,14 @@ namespace HiddenWorld
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
+                    _currentJumpAmount++;
                     // update animator if using character
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
                     }
+                    // if we are not grounded, do not jump
+                    _input.jump = false;
                 }
 
                 // jump timeout
@@ -314,6 +329,24 @@ namespace HiddenWorld
             }
             else
             {
+                //extra Jump
+                if (_currentJumpAmount < _maxJumpAmount)
+                {
+                    if (_input.jump && _jumpTimeoutDelta <= 1.0f)
+                    {
+                        // the square root of H * -2 * G = how much velocity needed to reach desired height
+                        _currentJumpAmount++;
+                        _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                        // update animator if using character
+                        if (_hasAnimator)
+                        {
+                            _animator.SetBool(_animIDJump, true);
+                        }
+                        // if we are not grounded, do not jump
+                        _input.jump = false;
+                    }
+                }
+
                 // reset the jump timeout timer
                 _jumpTimeoutDelta = jumpTimeout;
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace HiddenWorld
+namespace HiddenWorld.Player
 {
 	public class HiddenWorldInputs : MonoBehaviour
 	{
@@ -12,6 +12,8 @@ namespace HiddenWorld
 		public bool crouch;
 		public bool sprint;
 		public bool interact;
+		public bool aim;
+		public bool spyglass;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -53,6 +55,15 @@ namespace HiddenWorld
 			SprintInput(value.isPressed);
 		}
 
+		public void OnAim(InputValue value)
+		{
+			AimInput(value.isPressed);
+		}
+		public void OnSpyglass(InputValue value)
+		{
+			SpyglassInput(value.isPressed);
+		}
+
 		public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
@@ -81,6 +92,14 @@ namespace HiddenWorld
 		public void InteractInput(bool newInteractState)
 		{
 			interact = newInteractState;
+		}
+		public void AimInput(bool newInteractState)
+		{
+			aim = newInteractState;
+		}
+		public void SpyglassInput(bool newInteractState)
+		{
+			spyglass = newInteractState;
 		}
 
 		private void OnApplicationFocus(bool hasFocus)
