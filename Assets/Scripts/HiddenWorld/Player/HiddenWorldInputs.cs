@@ -72,6 +72,15 @@ namespace HiddenWorld.Player
 			SpyglassInput(value.isPressed);
 		}
 
+		public void OnAim(InputValue value)
+		{
+			AimInput(value.isPressed);
+		}
+		public void OnSpyglass(InputValue value)
+		{
+			SpyglassInput(value.isPressed);
+		}
+
 		public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
