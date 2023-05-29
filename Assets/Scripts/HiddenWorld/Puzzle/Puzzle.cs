@@ -63,8 +63,16 @@ namespace HiddenWorld.Puzzle
         public void AddList2Piece(string addPiece)
         {
             //List2 is list built from puzzlePiece entries { "Piece1", "Piece2"}
-            currSolvedList.Add(addPiece);
-            ResolvePuzzle();
+            if (!currSolvedList.Contains(addPiece))
+            {
+                currSolvedList.Add(addPiece);
+                ResolvePuzzle();
+            }
+        }
+
+        public void RemoveList2Piece(string removePiece)
+        {
+            if (currSolvedList.Contains(removePiece)) currSolvedList.Remove(removePiece);
         }
         public void ResolvePuzzle()
         {
