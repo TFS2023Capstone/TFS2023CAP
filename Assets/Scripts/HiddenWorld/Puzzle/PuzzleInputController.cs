@@ -8,6 +8,8 @@ namespace HiddenWorld
 {
     public class PuzzleInputController : MonoBehaviour
     {
+        [SerializeField]
+        private LayerMask PuzzlePieceLayerMask;
         public IInteractable selectedObject;
         Vector3 offset;
         private bool _isSet = false;
@@ -26,33 +28,34 @@ namespace HiddenWorld
 
             // Use the camera's position as a reference for the zDistance
             float zDistance = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
-
             // Convert the mouse position to a world position with the correct z-distance
             _mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zDistance));
 
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit hitInfo;
-                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 10.0f, PuzzlePieceLayerMask);
 
-                IInteractable interactable = hitInfo.transform.gameObject.GetComponent<IInteractable>();
-
-                if (hit && interactable != null)
+                if (hit)
                 {
-                    selectedObject = interactable;
-                    Debug.Log("selected object is " + selectedObject);
-                    selectedObjectTransform = hitInfo.transform;
-                    offset = selectedObjectTransform.position - _mousePosition;
-                    _isSet = interactable.OnInteract();
+                    IInteractable interactable = hitInfo.transform.gameObject.GetComponent<IInteractable>();
+
+                    if (interactable != null)
+                    {
+                        selectedObject = interactable;
+                        Debug.Log("selected object is " + selectedObject);
+                        selectedObjectTransform = hitInfo.transform;
+                        _isSet = interactable.OnStartInteract();
+                    }
                 }
             }
             if (selectedObjectTransform)
             {
-                selectedObjectTransform.position = _mousePosition + offset;
+                selectedObjectTransform.position = new Vector3(_mousePosition.x, _mousePosition.y, selectedObjectTransform.position.z);
             }
             if (Input.GetMouseButtonUp(0) && selectedObject != null)
             {
-                Debug.Log("Mouse up detected");
+                selectedObject.OnStopInteract();
                 selectedObject = null;
                 selectedObjectTransform = null;
             }

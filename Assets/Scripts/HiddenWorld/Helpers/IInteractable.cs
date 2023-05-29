@@ -4,6 +4,7 @@ namespace HiddenWorld.Helpers
 {
     public interface IInteractable
     {
-        bool OnInteract();
+        bool OnStartInteract();
+        bool OnStopInteract();
     }
 }

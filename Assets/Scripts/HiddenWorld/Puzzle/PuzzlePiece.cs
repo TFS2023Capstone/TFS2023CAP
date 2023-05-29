@@ -6,11 +6,21 @@ using UnityEngine;
 
 namespace HiddenWorld.Puzzle
 {
-    public class PuzzlePiece : MonoBehaviour, IInteractable
+    public enum pieceState
     {
+        Inactive,
+        Active,
+        Locked
+    }
+
+    public class PuzzlePiece : MonoBehaviour, IInteractable, IPuzzlePiece
+    {
+        protected pieceState currentPieceState = pieceState.Inactive;
         public bool isSet = false;
         public bool isActive = false; // keep track of when a puzzle piece is being interacted with
         protected Puzzle _puzzle;
+        protected PuzzleSocket currentSocket;
+        
 
         // enum PuzzleType (Jigsaw, Sequential, etc)
 
@@ -18,21 +28,43 @@ namespace HiddenWorld.Puzzle
         {
             _puzzle = puzzle;
         }
-        public virtual bool OnInteract()
+        public virtual bool OnStartInteract()
         {
-            if (isActive)
+            if (currentPieceState == pieceState.Inactive)
             {
-                isActive = false;
-            }
-            else
-            {
-                isActive = true;
+                currentPieceState = pieceState.Active;
             }
 
-            //determine if the piece is set correctly or not and if it is set correctly calls AddList2Piece() in Puzzle class
-            if (isSet)
+            ////determine if the piece is set correctly or not and if it is set correctly calls AddList2Piece() in Puzzle class
+            //if (isSet)
+            //{
+            //    _puzzle.AddList2Piece(gameObject.name);
+            //}
+            return isActive;
+        }
+
+        public virtual bool OnStopInteract()
+        {
+            if (currentPieceState == pieceState.Active)
             {
-                _puzzle.AddList2Piece(gameObject.name);
+                if (currentSocket != null)
+                {
+                    transform.position = currentSocket.transform.position;
+                    currentPieceState = pieceState.Inactive;
+                    Debug.Log(currentSocket.IsCorrect);
+                    if (currentSocket.IsCorrect)
+                    {
+                        _puzzle.AddList2Piece(gameObject.name);
+                    }
+                    else
+                    {
+                        //_puzzle.RemoveList2Piece(gameObject.name);
+                    }
+                }
+                else
+                {
+                    currentPieceState = pieceState.Inactive;
+                }
             }
             return isActive;
         }
@@ -50,6 +82,17 @@ namespace HiddenWorld.Puzzle
         void Update()
         {
 
+        }
+
+        public void OnSocketEnter(PuzzleSocket socket)
+        {
+            //isSet = true;
+            currentSocket = socket;
+        }
+        public void OnSocketExit()
+        {
+            _puzzle.RemoveList2Piece(gameObject.name);
+            currentSocket = null;
         }
     }
 }
