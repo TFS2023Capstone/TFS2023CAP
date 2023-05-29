@@ -2,7 +2,7 @@ using HiddenWorld.Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace HiddenWorld
+namespace HiddenWorld.Player
 {
     public class UICanvasControllerInput : MonoBehaviour
     {

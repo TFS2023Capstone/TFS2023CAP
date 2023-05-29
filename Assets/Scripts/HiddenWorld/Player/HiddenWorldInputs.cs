@@ -9,6 +9,7 @@ namespace HiddenWorld.Player
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
+		public bool crouch;
 		public bool sprint;
 		public bool interact;
 		public bool aim;
@@ -39,6 +40,11 @@ namespace HiddenWorld.Player
 			JumpInput(value.isPressed);
 		}
 
+		public void OnCrouch(InputValue value)
+		{
+			CrouchInput(value.isPressed);
+		}
+
 		public void OnInteract(InputValue value)
 		{
 			InteractInput(value.isPressed);
@@ -48,6 +54,24 @@ namespace HiddenWorld.Player
 		{
 			SprintInput(value.isPressed);
 		}
+		public void OnAim(InputValue value)
+		{
+			AimInput(value.isPressed);
+		}
+		public void OnSpyglass(InputValue value)
+		{
+			SpyglassInput(value.isPressed);
+		}
+
+		public void OnAim(InputValue value)
+		{
+			AimInput(value.isPressed);
+		}
+		public void OnSpyglass(InputValue value)
+		{
+			SpyglassInput(value.isPressed);
+		}
+
 		public void OnAim(InputValue value)
 		{
 			AimInput(value.isPressed);
@@ -70,6 +94,11 @@ namespace HiddenWorld.Player
 		public void JumpInput(bool newJumpState)
 		{
 			jump = newJumpState;
+		}
+
+		public void CrouchInput(bool newCrouchState)
+		{
+			crouch = newCrouchState;
 		}
 
 		public void SprintInput(bool newSprintState)
