@@ -15,6 +15,15 @@ public class QuitGameButton : MonoBehaviour
     /// Return:
     /// void (no return)
     /// </summary>
+    /// 
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            QuitGame();
+        }
+    }
     public void QuitGame()
     {
 #if UNITY_EDITOR
