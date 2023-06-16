@@ -9,14 +9,12 @@ public class PopupNotifications : MonoBehaviour
 
     private Animator popupAnimator;
     private Queue<string> popupQueue;
-    //private Queue<string> popupQueueObj;
     private Coroutine queueChecker;
 
     private void Start()
     {
         popupAnimator = GetComponent<Animator>();
         popupQueue = new Queue<string>();
-        //popupQueueObj = new Queue<string>();
 
         AddToQueue("Completed Objective");
         AddToQueue("JK");
