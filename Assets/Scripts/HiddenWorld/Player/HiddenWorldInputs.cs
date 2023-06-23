@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,7 @@ namespace HiddenWorld.Player
 		public bool interact;
 		public bool aim;
 		public bool spyglass;
+		public bool dash;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -54,7 +56,15 @@ namespace HiddenWorld.Player
 		{
 			SprintInput(value.isPressed);
 		}
-		public void OnAim(InputValue value)
+
+		public void OnDash(InputValue value)
+		{
+			DashInput(value.isPressed);
+		}
+
+        
+
+        public void OnAim(InputValue value)
 		{
 			AimInput(value.isPressed);
 		}
@@ -88,7 +98,12 @@ namespace HiddenWorld.Player
 			sprint = newSprintState;
 		}
 
-		public void InteractInput(bool newInteractState)
+        private void DashInput(bool newDashState)
+        {
+			dash = newDashState;
+        }
+
+        public void InteractInput(bool newInteractState)
 		{
 			interact = newInteractState;
 		}
