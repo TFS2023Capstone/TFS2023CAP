@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using System.Collections;
+
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
@@ -105,6 +107,7 @@ namespace HiddenWorld.Player
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -217,10 +220,30 @@ namespace HiddenWorld.Player
                 _cinemachineTargetYaw, 0.0f);
         }
 
+        private float targetSpeed;
+        private bool isDashing;
+
+        private IEnumerator Dash(float multiplier, float duration)
+        {
+            isDashing = true;
+            float originalSpeed = targetSpeed;
+            targetSpeed *= multiplier;
+
+            yield return new WaitForSeconds(duration);
+
+            targetSpeed = originalSpeed;
+            isDashing = false;
+            _input.dash = false;
+        }
+
         private void Move()
         {
-            // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? sprintSpeed : moveSpeed;
+            targetSpeed = _input.sprint ? sprintSpeed : moveSpeed;
+
+            if (_input.dash && !isDashing)
+            {
+                StartCoroutine(Dash(150.0f, 0.5f));
+            }
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -284,7 +307,7 @@ namespace HiddenWorld.Player
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
-        }
+        }                    
 
         private void JumpAndGravity()
         {
