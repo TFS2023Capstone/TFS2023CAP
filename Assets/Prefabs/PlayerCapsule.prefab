@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 6508358669264998352}
   - component: {fileID: 1925873226565265918}
   - component: {fileID: 9150832847614054769}
+  - component: {fileID: -1226639191864587194}
   m_Layer: 8
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -184,6 +185,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
   footstepAudioVolume: 0.5
   jumpHeight: 1.2
+  crouchHeight: 1
+  standingHeight: 1.8
+  timeToCrouch: 0.25
+  crouchCenter: {x: 0, y: 0.52, z: 0}
+  standingCenter: {x: 0, y: 0.93, z: 0}
+  HeadPosition: {fileID: 0}
   gravity: -15
   jumpTimeout: 0.5
   fallTimeout: 0.15
@@ -198,6 +205,7 @@ MonoBehaviour:
   bottomClamp: -30
   cameraAngleOverride: 0
   lockCameraPosition: 0
+  _maxJumpAmount: 2
 --- !u!114 &6508358669264998352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +221,12 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
   jump: 0
+  crouch: 0
   sprint: 0
   interact: 0
+  aim: 0
+  spyglass: 0
+  dash: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -334,6 +346,20 @@ MonoBehaviour:
     m_Bits: 0
   canPush: 0
   strength: 1.1
+--- !u!136 &-1226639191864587194
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925873226565265906}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6074239116653777065
 GameObject:
   m_ObjectHideFlags: 0
