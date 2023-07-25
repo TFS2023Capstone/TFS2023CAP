@@ -11,16 +11,18 @@ TagManager:
   - Piece3
   - Piece4
   - PlayerHead
+  - Enemy
+  - Pickup
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - PuzzleSockets
   - PuzzlePieces
-  - 
+  - Movable
   - 
   - 
   - 
