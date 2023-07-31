@@ -15,11 +15,15 @@ namespace HiddenWorld.Puzzle
         {
             Debug.Log("the other collider is" + other);
             Debug.Log("Door triggered");
-            if (!isOpen)
+            if (other.transform.name == "PressurePlate")
             {
-                Door.transform.position += new Vector3(0, 3, 0);
-                isOpen = true;
+                if (!isOpen)
+                {
+                    Door.transform.position += new Vector3(0, 3, 0);
+                    isOpen = true;
+                }
             }
+            
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -30,10 +34,13 @@ namespace HiddenWorld.Puzzle
         private void OnTriggerExit(Collider other)
         {
             Debug.Log("Door un-triggered");
-            if (isOpen)
+            if (other.transform.name == "PressurePlate")
             {
-                Door.transform.position += new Vector3(0, -3, 0);
-                isOpen = false;
+                if (isOpen)
+                {
+                    Door.transform.position += new Vector3(0, -3, 0);
+                    isOpen = false;
+                }
             }
         }
         // Start is called before the first frame update
