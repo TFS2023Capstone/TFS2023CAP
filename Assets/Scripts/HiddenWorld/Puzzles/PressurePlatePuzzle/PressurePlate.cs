@@ -5,54 +5,69 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    public Vector3 originalPos;
-    bool moveBack = false;
+    public Vector3 upPosition;
+    public Vector3 downPosition;
+    public float lerpDuration = 1f;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool isMoving = false;
+    private bool isGoingUp = true;
+
+    private void Start()
     {
-        originalPos = transform.position;
+        upPosition = transform.position;
+        downPosition = upPosition + new Vector3(0, -0.2f, 0); // Adjust the offset as needed
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.name == "Boulder")
+        if (collision.transform.CompareTag("Boulder"))
         {
-            transform.Translate(0, -0.001f, 0);
-            moveBack = false;
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.name == "Player" || collision.transform.name == "Boulder")
-        {
-            collision.transform.parent = transform;
+            MovePlateDown();
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.transform.name == "Boulder")
+        if (collision.transform.CompareTag("Boulder"))
         {
-            moveBack = true;
-            collision.transform.parent = null;
+            MovePlateUp();
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void MovePlateDown()
     {
-        if (!moveBack)
+        if (!isMoving && isGoingUp)
         {
-            if (transform.position.y < originalPos.y)
-            {
-                transform.Translate(0, 0.001f, 0);
-            }
-            else
-            {
-                moveBack = false;
-            }
+            isGoingUp = false;
+            StartCoroutine(MovePlate(downPosition));
         }
+    }
+
+    private void MovePlateUp()
+    {
+        if (!isMoving && !isGoingUp)
+        {
+            isGoingUp = true;
+            StartCoroutine(MovePlate(upPosition));
+        }
+    }
+
+    // Coroutine function for the LERP movement.
+    private IEnumerator MovePlate(Vector3 targetPosition)
+    {
+        isMoving = true;
+
+        Vector3 startPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < lerpDuration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / lerpDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+        isMoving = false;
     }
 }
