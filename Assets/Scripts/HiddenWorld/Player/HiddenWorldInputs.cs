@@ -16,8 +16,10 @@ namespace HiddenWorld.Player
 		public bool aim;
 		public bool spyglass;
 		public bool dash;
+		public bool journal;
+        public bool pause;
 
-		[Header("Movement Settings")]
+        [Header("Movement Settings")]
 		public bool analogMovement;
 
 		[Header("Mouse Cursor Settings")]
@@ -42,7 +44,17 @@ namespace HiddenWorld.Player
 			JumpInput(value.isPressed);
 		}
 
-		public void OnCrouch(InputValue value)
+        public void OnOpenJournal(InputValue value)              //here
+        {
+			JournalInput(value.isPressed);
+        }
+
+        public void OnOpenPause(InputValue value)              //here
+        {
+            PauseInput(value.isPressed);
+        }
+
+        public void OnCrouch(InputValue value)
 		{
 			CrouchInput(value.isPressed);
 		}
@@ -61,8 +73,6 @@ namespace HiddenWorld.Player
 		{
 			DashInput(value.isPressed);
 		}
-
-        
 
         public void OnAim(InputValue value)
 		{
@@ -116,7 +126,17 @@ namespace HiddenWorld.Player
 			spyglass = newInteractState;
 		}
 
-		private void OnApplicationFocus(bool hasFocus)
+        public void JournalInput(bool newJournalState)
+        {
+            journal = newJournalState;
+        }
+
+        public void PauseInput(bool newPauseState)
+        {
+            pause = newPauseState;
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
 		}

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using HiddenWorld.Helpers;
+using HiddenWorld.Player;
 using HiddenWorld.Systems;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.Windows;
 
 namespace HiddenWorld.UI
 {
@@ -28,6 +30,9 @@ namespace HiddenWorld.UI
         [Header("Pause Settings")]
         [Tooltip("The index of the pause page in the pages list")]
         public int pausePageIndex = 1;
+        [Header("Journal Settings")]
+        [Tooltip("The index of the journal page in the pages list")]
+        public int journalPageIndex = -1;
         [Tooltip("Whether or not to allow pausing")]
         public bool allowPause = true;
         [Header("Polish Effects")]
@@ -39,8 +44,11 @@ namespace HiddenWorld.UI
         public GameObject backEffect;
         public GameObject worldSpaceUICanvas;
 
+        private HiddenWorldInputs _input;
+
         // Whether the application is paused
         private bool isPaused = false;
+        private bool isJournalOpen = false;
 
         // A list of all UI element classes
         private List<UIelement> UIelements;
@@ -157,7 +165,9 @@ namespace HiddenWorld.UI
         }
         private void Update()
         {
+            _input = GetComponent<HiddenWorldInputs>();
             CheckPauseInput();
+            CheckJournalInput();
         }
 
         /// <summary>
@@ -170,9 +180,39 @@ namespace HiddenWorld.UI
         /// </summary>
         private void CheckPauseInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) 
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape)) 
             {
                 TogglePause();
+            }
+        }
+
+        private void CheckJournalInput()
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.J))
+            {
+                ToggleJournal();
+            }
+        }
+
+        private void ToggleJournal()
+        {
+            if (isJournalOpen)
+            {
+                //CursorController.instance.ChangeCursorMode(CursorController.CursorState.TPS);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                GoToPage(defaultPage);
+                Time.timeScale = 1;
+                isJournalOpen = false;
+            }
+            else
+            {
+                //CursorController.instance.ChangeCursorMode(CursorController.CursorState.Menu);
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                GoToPage(journalPageIndex);
+                Time.timeScale = 0;
+                isJournalOpen = true;
             }
         }
         /// <summary>
